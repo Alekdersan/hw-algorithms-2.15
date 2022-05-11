@@ -1,10 +1,9 @@
 package ru.skypro;
 
 
-import ru.skypro.execptions.NotFoundException;
+import ru.skypro.example.SortUtils;
 
 import java.util.Arrays;
-import java.util.Objects;
 
 
 public class IntegerListImpl implements IntegerList {
@@ -27,6 +26,7 @@ public class IntegerListImpl implements IntegerList {
     public Integer add(Integer item) {
         checkOverflow();
         checkNotNull(item);
+        checkCapacity();
         array[size++] = item;
         return item;
     }
@@ -43,6 +43,7 @@ public class IntegerListImpl implements IntegerList {
     public Integer add(int index, Integer item) {
         checkNotNull(item);
         checkIndex(index);
+        checkCapacity();
         System.arraycopy(array, index, array, index + 1, size - index);
         array[size++] = item;
         return item;
@@ -61,6 +62,7 @@ public class IntegerListImpl implements IntegerList {
     public Integer remove(Integer item) {
         checkNotNull(item);
         checkIfItemExists(item);
+        checkCapacity();
         int index = indexOf(item);
         removeItem(index);
         return item;
@@ -85,6 +87,7 @@ public class IntegerListImpl implements IntegerList {
 
     @Override
     public boolean contains(Integer item) {
+        sort();
         return binarySearch(item);
     }
 
@@ -172,9 +175,28 @@ public class IntegerListImpl implements IntegerList {
         }
     }
 
+    private Integer[] grow() {
+        return Arrays.copyOf(array, (int) (size * 1.5));
+    }
+
+    private Integer[] resize() {
+        return Arrays.copyOf(array, (array.length * 2 / 3));
+    }
+
+    private void checkCapacity() {
+        if (size == array.length) {
+            array = grow();
+        } else if (size < array.length / 2) {
+            array = resize();
+        }
+    }
+
+    private void sort() {
+        SortUtils.quickSort(array);
+    }
+
     private boolean binarySearch(Integer item) {
         checkNotNull(item);
-
         int min = 0;
         int max = array.length - 1;
 

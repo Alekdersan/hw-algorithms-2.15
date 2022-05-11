@@ -3,7 +3,9 @@ package ru.skypro.test;
 import java.util.Arrays;
 import java.util.Random;
 
-import static ru.skypro.SortUtils.*;
+import static ru.skypro.SortUtils.mergeSort;
+import static ru.skypro.SortUtils.quickSort;
+import static ru.skypro.example.SortUtils.*;
 
 public class SortUtilsTest {
 
@@ -20,6 +22,8 @@ public class SortUtilsTest {
 
         Integer[] array2 = Arrays.copyOf(array1, ARRAY_CAPACITY);
         Integer[] array3 = Arrays.copyOf(array1, ARRAY_CAPACITY);
+        Integer[] array4 = Arrays.copyOf(array1, ARRAY_CAPACITY);
+        Integer[] array5 = Arrays.copyOf(array1, ARRAY_CAPACITY);
 
         long start = System.currentTimeMillis();
         sortBubble(array1);
@@ -32,5 +36,13 @@ public class SortUtilsTest {
         start = System.currentTimeMillis();
         sortInsertion(array3);
         System.out.println("Insertion sort: " + (System.currentTimeMillis() - start));
+
+        start = System.currentTimeMillis();
+        quickSort(array4);
+        System.out.println("Quick sort: " + (System.currentTimeMillis() - start));
+
+        start = System.currentTimeMillis();
+        mergeSort(array5);
+        System.out.println("Merge sort: " + (System.currentTimeMillis() - start));
     }
 }
